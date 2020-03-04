@@ -33,7 +33,7 @@ for ic,filename1 in enumerate(filename):
     Z1 = data1[0]
     Yc = data1[1]
 
-    sc = plt.scatter(Z1,Yc,c=data1[3],cmap='rainbow',vmin=300, vmax=2200)
+    sc = plt.scatter(Z1,Yc,c=data1[4],cmap='rainbow')
 v = [300,500,1000,1500,2000,2300]
 cbar = plt.colorbar(sc,ticks=v)
 cbar.set_label(r'$T$ $\mathrm{(K)}$')
@@ -43,4 +43,4 @@ plt.xlabel(r'$Z$ (-)')
 plt.ylabel(r'$Y_c$ (-)')
 plt.tight_layout()
 plt.show()
-
+plt.savefig("scatter_plot.png")

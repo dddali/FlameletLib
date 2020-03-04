@@ -181,28 +181,27 @@ for j,file in enumerate(filename):
     fig.tight_layout()
     plt.savefig(file+'-x-T.png',dpi=500,bbox_inches='tight')
 
-
-# ------Plot 2------
-# Plot T-Z
-fig, ax = plt.subplots(figsize=figs)
-for i,file in enumerate(filename):
-    data = np.loadtxt(file, delimiter=',', skiprows = 1)
-    data = np.transpose(data)
-    x = data[xIndex]
-    T = data[TIndex]
-    YIN = data[ARIndex]
-    YIN_O = max(YIN[-1], YIN[0])
-    YIN_F = 0
-    Z = (YIN - YIN_O)/(YIN_F - YIN_O)
-    ax.plot(Z,T,label=file)
-ax.set_xlabel(r'$Z$ (-)')
-ax.legend()
-#ax.set_ylim(bottom=300)
-# ax.margins(x=0.0)
-# ax.set_xlim(0,1.0)
-# ax.set_ylim(300,2200)
-ax.set_ylabel(r'$T$ (K)')
-fig.tight_layout()
+# # ------Plot 2------
+# # Plot T-Z
+# fig, ax = plt.subplots(figsize=figs)
+# for i,file in enumerate(filename):
+#     data = np.loadtxt(file, delimiter=',', skiprows = 1)
+#     data = np.transpose(data)
+#     x = data[xIndex]
+#     T = data[TIndex]
+#     YIN = data[ARIndex]
+#     YIN_O = max(YIN[-1], YIN[0])
+#     YIN_F = 0
+#     Z = (YIN - YIN_O)/(YIN_F - YIN_O)
+#     ax.plot(Z,T,label=file)
+# ax.set_xlabel(r'$Z$ (-)')
+# ax.legend()
+# #ax.set_ylim(bottom=300)
+# # ax.margins(x=0.0)
+# # ax.set_xlim(0,1.0)
+# # ax.set_ylim(300,2200)
+# ax.set_ylabel(r'$T$ (K)')
+# fig.tight_layout()
 
 # ------Plot 3------
 # Plot Z-Yc:T
@@ -252,19 +251,37 @@ fig.tight_layout()
 #ax.legend()
 #fig.tight_layout()
 
-# ------Plot 5------
-# Plot u
-fig, ax = plt.subplots(figsize=figs)
-for i, file in enumerate(filename):
-    data2 = np.loadtxt(file,delimiter=',',comments='#',skiprows=1)
-    data2 = np.transpose(data2)
-    x = data2[0]
-    u = data2[1]
-    ax.plot(x,u,label=file)
-ax.set_xlim(0,0.02)
-ax.set_xlabel(r'$x$ (m)')
-ax.set_ylabel(r'$u$ (m/s)')
-ax.legend()
-fig.tight_layout()
+# # ------Plot 5------
+# # Plot u
+# fig, ax = plt.subplots(figsize=figs)
+# for i, file in enumerate(filename):
+#     data2 = np.loadtxt(file,delimiter=',',comments='#',skiprows=1)
+#     data2 = np.transpose(data2)
+#     x = data2[0]
+#     u = data2[1]
+#     ax.plot(x,u,label=file)
+# ax.set_xlim(0,0.02)
+# ax.set_xlabel(r'$x$ (m)')
+# ax.set_ylabel(r'$u$ (m/s)')
+# ax.legend()
+# fig.tight_layout()
+
+# ------Plot 6------
+# Plot Yd
+# fig, ax = plt.subplots(figsize=figs)
+# for i, fl in enumerate(filename):
+#     filename2 = 'dispersed' + fl[6::]
+#     data2 = np.loadtxt(filename2,delimiter=',',comments='#',skiprows=1)
+#     data2 = np.transpose(data2)
+#     x = data2[0]
+#     Yd0 = data2[8]
+#     Yd1 = data2[9]
+#     ax.plot(x,Yd0,label='NXC10H22')
+#     ax.plot(x,Yd1,label='TMB')
+# ax.set_xlim(0,0.02)
+# ax.set_xlabel(r'$x$ (m)')
+# ax.set_ylabel(r'$Y_d$ (-)')
+# ax.legend()
+# fig.tight_layout()
 
 plt.show()

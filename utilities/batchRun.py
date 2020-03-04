@@ -28,9 +28,9 @@ data = np.loadtxt(task_file_path)
 n = len(data)
 
 def counterflow(x):
-    mf = x[0]
-    mo = x[1]
-    domain_length = x[2]
+    # mf = x[0]
+    # mo = x[1]
+    # domain_length = x[2]
     cur_case_output_name = 'mf-{}mo-{}L-{}_raw.txt'.format(mf, mo, domain_length)
 
     dup_exist = False
@@ -44,10 +44,10 @@ def counterflow(x):
         print(info)
 
     if (not dup_exist) or (dup_exist and OverwriteExisting):
-        prog = "counterflowSprayFlame"
-        arg1 = "{}".format(mf)
-        arg2 = "{}".format(mo)
-        arg3 = "{}".format(domain_length)
+        prog = "chemflow"
+        # arg1 = "{}".format(mf)
+        # arg2 = "{}".format(mo)
+        # arg3 = "{}".format(domain_length)
         cmd = [prog, arg1, arg2, arg3]
         counterflow=subprocess.Popen(cmd, cwd=output_dir)
         counterflow.wait()

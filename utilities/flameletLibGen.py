@@ -24,6 +24,7 @@ mpl.rcParams['savefig.bbox'] = 'tight'
 p = 101325.0  # constant pressure
 ctifile = input(
         'CTI FILE:  '
+        '  Kerosene_122.cti'
         '  Ethanol_31.cti'
         '  Heptane0.cti\n')
 gas = ct.Solution(ctifile)  # ethanol

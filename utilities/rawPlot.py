@@ -5,7 +5,7 @@ import matplotlib as mpl
 
 # Configurations
 mpl.rcParams['font.family'] = 'serif'
-mpl.rcParams['font.size'] = 20
+mpl.rcParams['font.size'] = 18
 mpl.rcParams['font.weight'] = 'medium'
 mpl.rcParams['font.style'] = 'normal'
 # mpl.rcParams['font.serif'] = 'DejaVu Serif'
@@ -183,25 +183,28 @@ for j,file in enumerate(filename):
 
 # # ------Plot 2------
 # # Plot T-Z
-# fig, ax = plt.subplots(figsize=figs)
-# for i,file in enumerate(filename):
-#     data = np.loadtxt(file, delimiter=',', skiprows = 1)
-#     data = np.transpose(data)
-#     x = data[xIndex]
-#     T = data[TIndex]
-#     YIN = data[ARIndex]
-#     YIN_O = max(YIN[-1], YIN[0])
-#     YIN_F = 0
-#     Z = (YIN - YIN_O)/(YIN_F - YIN_O)
-#     ax.plot(Z,T,label=file)
-# ax.set_xlabel(r'$Z$ (-)')
-# ax.legend()
-# #ax.set_ylim(bottom=300)
-# # ax.margins(x=0.0)
-# # ax.set_xlim(0,1.0)
-# # ax.set_ylim(300,2200)
-# ax.set_ylabel(r'$T$ (K)')
-# fig.tight_layout()
+fig, ax = plt.subplots(figsize=(8,5))
+for i,file in enumerate(filename):
+    data = np.loadtxt(file, delimiter=',', skiprows = 1)
+    data = np.transpose(data)
+    x = data[xIndex]
+    T = data[TIndex]
+    YIN = data[ARIndex]
+    YIN_O = max(YIN[-1], YIN[0])
+    YIN_F = 0
+    Z = (YIN - YIN_O)/(YIN_F - YIN_O)
+    u = data[uIndex]
+    a = (u[0] - u[-1]) / (x[-1] - x[0])
+    ax.plot(Z,T,label='a = {:.0f}'.format(a), lw=1.5)
+ax.set_xlabel(r'$Z$ (-)')
+ax.legend(loc='upper right', fontsize=15)
+#ax.set_ylim(bottom=300)
+# ax.margins(x=0.0)
+# ax.set_xlim(0,1.0)
+# ax.set_ylim(300,2200)
+ax.set_ylabel(r'$T$ (K)')
+fig.tight_layout()
+plt.savefig("ZT.png", dpi=500)
 
 # ------Plot 3------
 # Plot Z-Yc:T

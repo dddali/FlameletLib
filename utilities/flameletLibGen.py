@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 # Configurations
 mpl.rcParams['font.family'] = 'serif'
-mpl.rcParams['font.size'] = 18
+mpl.rcParams['font.size'] = 16
 mpl.rcParams['font.weight'] = 'medium'
 mpl.rcParams['font.style'] = 'normal'
 # mpl.rcParams['font.serif'] = 'DejaVu Serif'
@@ -77,11 +77,11 @@ for filename in os.listdir():
                 continue
         break  # only read one file
 
-fig = plt.figure(figsize=(12,8))
-ax1 = plt.subplot(221)
-ax2 = plt.subplot(222)
-ax3 = plt.subplot(223)
-ax4 = plt.subplot(224)
+fig = plt.figure(figsize=(8,5))
+ax1 = plt.subplot(111)
+# ax2 = plt.subplot(222)
+# ax3 = plt.subplot(223)
+# ax4 = plt.subplot(224)
 n = 0  # count
 for filename in os.listdir():
     if filename.endswith('.csv'):
@@ -125,10 +125,14 @@ for filename in os.listdir():
         data2.append(list(Yc))
         data2.append(list(h))
         data2.append(list(omegaYc))
-        ax1.scatter(Z, T, color='C0', s=4)
-        ax2.scatter(Z, h/1000, color='C1', s=4)
-        ax3.scatter(Z, Yc, color='C2', s=4)
-        ax4.scatter(Z, omegaYc, color='C3', s=4)
+
+        x = data1[xIndex]
+        u = data1[uIndex]
+        a = (u[0] - u[-1]) / (x[-1] - x[0])
+        ax1.plot(Z, T, label='a = {:.0f}'.format(a))
+        # ax2.scatter(Z, h/1000, color='C1', s=4)
+        # ax3.scatter(Z, Yc, color='C2', s=4)
+        # ax4.scatter(Z, omegaYc, color='C3', s=4)
         data2.append(list(T))
         for i in range(len(data1)):
             if i >= speciesStart:
@@ -140,12 +144,14 @@ for filename in os.listdir():
         with open(filename2, 'a') as f:
             np.savetxt(f, data2, delimiter=',',fmt='%f')
 ax1.set_xlabel('Z (-)')
-ax2.set_xlabel('Z (-)')
-ax3.set_xlabel('Z (-)')
-ax4.set_xlabel('Z (-)')
+# ax2.set_xlabel('Z (-)')
+# ax3.set_xlabel('Z (-)')
+# ax4.set_xlabel('Z (-)')
 ax1.set_ylabel('T (K)')
-ax2.set_ylabel('h (kJ/kg)')
-ax3.set_ylabel('C (-)')
-ax4.set_ylabel('source (kg/m3 s)')
-plt.savefig('lib.png',dpi=500)
+ax1.legend()
+# ax2.set_ylabel('h (kJ/kg)')
+# ax3.set_ylabel('C (-)')
+# ax4.set_ylabel('source (kg/m3 s)')
+plt.tight_layout()
 plt.show()
+plt.savefig('ZT.png',dpi=500)

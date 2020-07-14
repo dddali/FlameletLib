@@ -4,6 +4,8 @@ import os
 import cantera as ct
 import numpy as np
 import matplotlib as mpl
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.ticker import FormatStrFormatter
 import matplotlib.pyplot as plt
 
 # Configurations
@@ -11,10 +13,6 @@ mpl.rcParams['font.family'] = 'serif'
 mpl.rcParams['font.size'] = 16
 mpl.rcParams['font.weight'] = 'medium'
 mpl.rcParams['font.style'] = 'normal'
-# mpl.rcParams['font.serif'] = 'DejaVu Serif'
-# mpl.rcParams['font.serif'] = 'Georgia'
-# mpl.rcParams['font.serif'] = 'Times New Roman'
-# mpl.rcParams['text.usetex'] = True
 mpl.rcParams['mathtext.fontset'] = 'stix'
 mpl.rcParams['mathtext.fallback_to_cm'] = True
 mpl.rcParams['savefig.dpi'] = 300
@@ -28,7 +26,7 @@ ctifile = input(
         '  Ethanol_31.cti'
         '  Heptane0.cti\n')
 gas = ct.Solution(ctifile)  # ethanol
-data_directory = 'tables'  # output dir
+data_directory = 'tables_1'  # output dir
 if not os.path.exists(data_directory):
     os.makedirs(data_directory)
 #=============================================================================#
@@ -77,14 +75,11 @@ for filename in os.listdir():
                 continue
         break  # only read one file
 
-fig = plt.figure(figsize=(8,5))
-ax1 = plt.subplot(111)
-# ax2 = plt.subplot(222)
-# ax3 = plt.subplot(223)
-# ax4 = plt.subplot(224)
+fig = plt.figure(figsize=(9,5))
+ax = fig.add_subplot(111, projection='3d')
 n = 0  # count
-for filename in os.listdir():
-    if filename.endswith('.csv'):
+for filename1 in os.listdir():
+    if filename1.endswith('.csv'):
         filename2 = os.path.join(data_directory, 'flameletTable_{:}.csv'.format(n))
         n += 1
         with open(filename2, 'w+') as fo:
@@ -93,15 +88,14 @@ for filename in os.listdir():
                 line += f',{i}'
             fo.write(line+'\n')
 
-        dataReaction = np.loadtxt(filename[:-4]+'-reaction', delimiter=',', skiprows=1).T  # reaction source
-        data1orig = np.loadtxt(filename, delimiter=',', skiprows=1)
+        dataReaction = np.loadtxt(filename1[:-4]+'-reaction', delimiter=',', skiprows=1).T  # reaction source
+        data1orig = np.loadtxt(filename1, delimiter=',', skiprows=1)
         data1 = np.transpose(data1orig)
 
         T = data1[TIndex]
         YAR = data1[ARIndex]
         YARO = max(YAR[-1], YAR[0])
         Z = (YAR - YARO) / (0.0-YARO)
-        # Yc = data1[H2OIndex] + data1[H2Index] + data1[CO2Index] + data1[COIndex]
         Yc = data1[H2OIndex] + data1[CO2Index]
 
         for i in range(len(data1)):
@@ -129,10 +123,7 @@ for filename in os.listdir():
         x = data1[xIndex]
         u = data1[uIndex]
         a = (u[0] - u[-1]) / (x[-1] - x[0])
-        ax1.plot(Z, T, label='a = {:.0f}'.format(a))
-        # ax2.scatter(Z, h/1000, color='C1', s=4)
-        # ax3.scatter(Z, Yc, color='C2', s=4)
-        # ax4.scatter(Z, omegaYc, color='C3', s=4)
+        sc = ax.scatter(Z, h/1000.0, Yc, c=T, vmin=275, vmax=2200)
         data2.append(list(T))
         for i in range(len(data1)):
             if i >= speciesStart:
@@ -143,15 +134,15 @@ for filename in os.listdir():
         data2 = np.transpose(data2)
         with open(filename2, 'a') as f:
             np.savetxt(f, data2, delimiter=',',fmt='%f')
-ax1.set_xlabel('Z (-)')
-# ax2.set_xlabel('Z (-)')
-# ax3.set_xlabel('Z (-)')
-# ax4.set_xlabel('Z (-)')
-ax1.set_ylabel('T (K)')
-ax1.legend()
-# ax2.set_ylabel('h (kJ/kg)')
-# ax3.set_ylabel('C (-)')
-# ax4.set_ylabel('source (kg/m3 s)')
+
+
+cbar = plt.colorbar(sc)
+cbar.set_label(r'T (K)')
+ax.set_zticks([0,0.1,0.2,0.3])
+ax.set_zlim(0,0.3)
+ax.set_xlabel(r'$Z$ (-)')
+ax.set_ylabel(r'$h$ (kJ/kg)')
+ax.set_zlabel(r'$Y_c$ (-)')
+# ax.tick_params(labelsize=14)
 plt.tight_layout()
 plt.show()
-plt.savefig('ZT.png',dpi=500)

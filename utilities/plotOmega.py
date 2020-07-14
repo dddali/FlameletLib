@@ -7,12 +7,7 @@ mpl.rcParams['font.family'] = 'serif'
 mpl.rcParams['font.size'] = 18
 mpl.rcParams['font.weight'] = 'medium'
 mpl.rcParams['font.style'] = 'normal'
-# mpl.rcParams['font.serif'] = 'DejaVu Serif'
-# mpl.rcParams['font.serif'] = 'Georgia'
-# mpl.rcParams['font.serif'] = 'Times New Roman'
-# mpl.rcParams['text.usetex'] = True
 mpl.rcParams['mathtext.fontset'] = 'stix'
-# mpl.rcParams['mathtext.fallback_to_cm'] = True
 mpl.rcParams['lines.linewidth'] = 2
 mpl.rcParams['savefig.dpi'] = 300
 mpl.rcParams['savefig.bbox'] = 'tight'
@@ -45,7 +40,7 @@ for i,file in enumerate(filename):
     data = np.transpose(data)
     x = data[0]
     for k in range(len(name)):
-        if k in [2,7,9,10,18,19,20]:
+        if k in [4,6,8,9]:
             ax1.plot(x,data[k],label=name[k],ls='-')
     ax2.plot(x,data[1],label=name[1],ls='-',c='k')
 
